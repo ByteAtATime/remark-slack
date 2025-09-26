@@ -50,3 +50,22 @@ Multiple asterisks inside a bold block: \*a\*b\*c\*d\*
 Bold surrounded by extra asterisks: \*\*\*text\*\*\*
 Bold surrounded by many extra asterisks: \*\*\*\*\*text\*\*\*\*\*
 Complex sequence of asterisks: \*\* one \* two \*\* three \* four \*
+
+**Spaces (programmatically generated for testing)**
+
+a\*b\*d
+a \*b\*d
+a\* b\*d
+a \* b\*d
+a\*b \*d
+a \*b \*d
+a\* b \*d
+a \* b *d
+a\*b\* d
+a **b** d
+a\* b\* d
+a **b** d
+a\*b \* d
+a **b** d
+a* b \* d
+a \* b \* d
