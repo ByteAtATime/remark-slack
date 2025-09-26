@@ -2,14 +2,15 @@
   "name": "remark-slack",
   "module": "src/index.ts",
   "type": "module",
-  "private": true,
   "devDependencies": {
     "@types/bun": "latest",
     "@types/mdast": "^4.0.4",
     "mdast-util-from-markdown": "^2.0.2",
     "micromark-util-types": "^2.0.2",
-    "unified": "^11.0.5"
+    "unified": "^11.0.5",
+    "remark-slack": "file:."
   },
+  "exports": "./src/index.ts",
   "peerDependencies": {
     "typescript": "^5"
   },
