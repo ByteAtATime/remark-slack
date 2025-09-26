@@ -1,5 +1,15 @@
 import type { Construct, Extension, Tokenizer } from "micromark-util-types";
 
+const validPrecedingChars = new Set([
+  32, 33, 34, 35, 36, 37, 38, 40, 42, 43, 44, 45, 46, 47, 58, 59, 60, 61, 62,
+  63, 91, 92, 94, 123, -3, -4, -5,
+]);
+
+const validSucceedingChars = new Set([
+  32, 33, 34, 35, 36, 37, 39, 41, 42, 43, 44, 45, 46, 47, 58, 59, 61, 63, 91,
+  94, 123, 125, -3, -4, -5,
+]);
+
 const tokenizeSlackBold: Tokenizer = function (effects, ok, nok) {
   let hasLeadingSpace = false;
   let isFirstChar = true;
@@ -8,7 +18,7 @@ const tokenizeSlackBold: Tokenizer = function (effects, ok, nok) {
 
   const inside = (code: number | null) => {
     if (isDone) {
-      if (code !== 32 && code !== -4 && code !== null) {
+      if (code && !validSucceedingChars.has(code)) {
         return nok(code);
       }
       return ok(code);
@@ -45,7 +55,7 @@ const tokenizeSlackBold: Tokenizer = function (effects, ok, nok) {
   const begin = (code: number | null) => inside(code);
 
   return (code) => {
-    if (this.previous != 32 && this.previous != null) {
+    if (previousCharCode && !validPrecedingChars.has(previousCharCode)) {
       return nok(code);
     }
 
