@@ -3,7 +3,7 @@ import type { Processor } from "unified";
 import { slackTokens } from "./micromark";
 import { remarkFromMarkdown } from "./from-markdown";
 
-export default function remarkGemoji() {
+export default function remarkSlack() {
   // @ts-expect-error: TS is wrong about `this`.
   const self = this as Processor<Root>;
   const data = self.data();

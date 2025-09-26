@@ -1,3 +1,3 @@
-import remarkGemoji from "./plugin";
+import remarkSlack from "./plugin";
 
-export default remarkGemoji;
+export default remarkSlack;
