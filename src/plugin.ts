@@ -17,8 +17,4 @@ export default function remarkGemoji() {
 
   micromarkExtensions.push(slackTokens);
   fromMarkdownExtensions.push(remarkFromMarkdown());
-
-  return function (tree: Root) {
-    console.dir(tree, { depth: null });
-  };
 }
