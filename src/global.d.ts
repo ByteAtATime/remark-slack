@@ -5,5 +5,7 @@ declare module "micromark-util-types" {
     slackBold: "slackBold";
     slackBoldMarker: "slackBoldMarker";
     slackBoldText: "slackBoldText";
+
+    multipleSpaces: "multipleSpaces";
   }
 }
