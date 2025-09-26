@@ -264,4 +264,4 @@ a * b * d
 123: *bold*{
 124: *not bold*|
 125: *bold*}
-126: *not bold*~
+126: *bold*~

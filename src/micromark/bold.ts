@@ -7,7 +7,7 @@ const validPrecedingChars = new Set([
 
 const validSucceedingChars = new Set([
   32, 33, 34, 35, 36, 37, 39, 41, 42, 43, 44, 45, 46, 47, 58, 59, 61, 63, 91,
-  94, 123, 125, -3, -4, -5,
+  94, 123, 125, 126, -3, -4, -5,
 ]);
 
 const tokenizeSlackBold: Tokenizer = function (effects, ok, nok) {
