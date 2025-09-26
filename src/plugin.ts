@@ -2,6 +2,7 @@ import type { Root } from "mdast";
 import type { Processor } from "unified";
 import { slackTokens } from "./micromark";
 import { remarkFromMarkdown } from "./from-markdown";
+import { visit } from "unist-util-visit";
 
 export default function remarkSlack() {
   // @ts-expect-error: TS is wrong about `this`.
@@ -17,4 +18,14 @@ export default function remarkSlack() {
 
   micromarkExtensions.push(slackTokens);
   fromMarkdownExtensions.push(remarkFromMarkdown());
+
+  return (tree: Root) => {
+    visit(tree, "text", (node) => {
+      if (node.value.includes("  ")) {
+        node.value = node.value.replace(/ {2,}/g, (match) => {
+          return "\u00A0".repeat(match.length - 1) + " ";
+        });
+      }
+    });
+  };
 }
