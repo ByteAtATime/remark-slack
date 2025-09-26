@@ -55,7 +55,7 @@ const tokenizeSlackBold: Tokenizer = function (effects, ok, nok) {
   const begin = (code: number | null) => inside(code);
 
   return (code) => {
-    if (previousCharCode && !validPrecedingChars.has(previousCharCode)) {
+    if (this.previous && !validPrecedingChars.has(this.previous)) {
       return nok(code);
     }
 
