@@ -12,7 +12,6 @@ Bold with only whitespace: * *
 Bold with multiple whitespace characters: *   *
 Entire message is bold: *Hello world*
 
-
 *Punctuation & Non-Alphanumeric Characters*
 
 Bold ending with punctuation: *bold!*
@@ -26,7 +25,6 @@ Bold text that is only an emoji shortcode: *:smile:*
 Bold text containing other potential markdown chars: *~_`>*
 Bold text with angle brackets: *<not a link>*
 
-
 *Unmatched & Incomplete*
 
 Unclosed bold at end of string: Here is some *bold
@@ -34,7 +32,6 @@ Unclosed bold in middle of string: Here is some *bold text here
 Unmatched leading asterisk: A * character
 Unmatched trailing asterisk: A character *
 Multiple unclosed bolds: *one and *two
-
 
 *Delimiter Rules (Ambiguity)*
 

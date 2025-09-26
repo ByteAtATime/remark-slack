@@ -6,12 +6,11 @@ Bold with leading space inside: **bold**
 Bold with trailing space inside: **bold**
 Bold with spaces on both ends inside: \* bold \*
 Bold with multiple spaces between words: **bold  text   here**
-Bold with newlines inside: \*line one
-line two\*
+Bold with newlines inside: *line one
+line two*
 Bold with only whitespace: \* \*
 Bold with multiple whitespace characters: \*   \*
 Entire message is bold: **Hello world**
-
 
 **Punctuation & Non-Alphanumeric Characters**
 
@@ -24,8 +23,7 @@ Bold text with Unicode characters: **\u4f60\u597d**
 Bold text with emoji shortcodes: **this is** **![:great:](https://emoji.slack-edge.com/T0266FRGM/great/9d7b3f7f11a5b904.png)**
 Bold text that is only an emoji shortcode: **![:smile:](https://a.slack-edge.com/production-standard-emoji-assets/14.0/google-medium/1f604.png)**
 Bold text containing other potential markdown chars: **~\_\`>**
-Bold text with angle brackets: **<not a link>**
-
+Bold text with angle brackets: **\<not a link>**
 
 **Unmatched & Incomplete**
 
@@ -34,7 +32,6 @@ Unclosed bold in middle of string: Here is some \*bold text here
 Unmatched leading asterisk: A \* character
 Unmatched trailing asterisk: A character \*
 Multiple unclosed bolds: \*one and \*two
-
 
 **Delimiter Rules (Ambiguity)**
 
