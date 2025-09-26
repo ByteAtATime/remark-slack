@@ -71,6 +71,11 @@ describe("fixtures", async function (t) {
         );
       }
 
+      await fs.writeFile(
+        new URL("actual.md", folderUrl),
+        String(await processor.process(input))
+      );
+
       assert.equal(String(await processor.process(input)), String(output));
 
       assert.deepEqual(actual, expected);
