@@ -132,8 +132,8 @@ a * b * d
 89: Y*not bold*
 90: Z*not bold*
 91: [*bold*
-92: \*bold*
-93: ]*not bold*
+92: \\*bold*
+93: \]*not bold*
 94: ^*bold*
 95: _*not bold*
 96: `*not bold*
@@ -230,8 +230,8 @@ a * b * d
 89: *not bold*Y
 90: *not bold*Z
 91: *bold*[
-92: *not bold*\
-93: *not bold*]
+92: *not bold*\\
+93: *bold*]
 94: *bold*^
 95: *not bold*_
 96: *not bold*`
