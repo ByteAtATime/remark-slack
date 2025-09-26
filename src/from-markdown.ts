@@ -17,7 +17,7 @@ export const remarkFromMarkdown = (): Extension => {
       slackBoldText(token) {
         const node = this.stack[this.stack.length - 1];
         if (node?.type === "text") {
-          node.value = this.sliceSerialize(token);
+          node.value = this.sliceSerialize(token).trim();
         }
         this.exit(token);
       },

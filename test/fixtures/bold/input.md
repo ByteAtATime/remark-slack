@@ -6,7 +6,8 @@ Bold with leading space inside: * bold*
 Bold with trailing space inside: *bold *
 Bold with spaces on both ends inside: * bold *
 Bold with multiple spaces between words: *bold  text   here*
-Bold with newlines inside: *line one\nline two*
+Bold with newlines inside: *line one
+line two*
 Bold with only whitespace: * *
 Bold with multiple whitespace characters: *   *
 Entire message is bold: *Hello world*

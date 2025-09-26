@@ -1,12 +1,20 @@
 import type { Construct, Extension, Tokenizer } from "micromark-util-types";
 
-const slackTokenize: Tokenizer = (effects, ok, nok) => {
+const slackTokenize: Tokenizer = function (effects, ok, nok) {
+  let hasLeadingSpace = false;
+  let isFirstChar = true;
+  let previousCharCode: number | null = null;
+
   const inside = (code: number | null) => {
     if (code === -5 || code === -4 || code === -3 || code === null) {
       return nok(code);
     }
 
     if (code === 42) {
+      if (hasLeadingSpace && previousCharCode === 32) {
+        return nok(code);
+      }
+
       effects.exit("slackBoldText");
       effects.enter("slackBoldMarker");
       effects.consume(code);
@@ -15,7 +23,13 @@ const slackTokenize: Tokenizer = (effects, ok, nok) => {
       return ok;
     }
 
+    if (isFirstChar && (code === 32 || code === 9)) {
+      hasLeadingSpace = true;
+    }
+
     effects.consume(code);
+    isFirstChar = false;
+    previousCharCode = code;
     return inside;
   };
 
