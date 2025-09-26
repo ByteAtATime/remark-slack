@@ -4,8 +4,16 @@ const tokenizeSlackBold: Tokenizer = function (effects, ok, nok) {
   let hasLeadingSpace = false;
   let isFirstChar = true;
   let previousCharCode: number | null = null;
+  let isDone = false;
 
   const inside = (code: number | null) => {
+    if (isDone) {
+      if (code !== 32 && code !== -4 && code !== null) {
+        return nok(code);
+      }
+      return ok(code);
+    }
+
     if (code === -5 || code === -4 || code === -3 || code === null) {
       return nok(code);
     }
@@ -20,10 +28,11 @@ const tokenizeSlackBold: Tokenizer = function (effects, ok, nok) {
       effects.consume(code);
       effects.exit("slackBoldMarker");
       effects.exit("slackBold");
-      return ok;
+      isDone = true;
+      return inside;
     }
 
-    if (isFirstChar && (code === 32 || code === 9)) {
+    if (isFirstChar && (code === 32 || code === -4)) {
       hasLeadingSpace = true;
     }
 
@@ -35,7 +44,11 @@ const tokenizeSlackBold: Tokenizer = function (effects, ok, nok) {
 
   const begin = (code: number | null) => inside(code);
 
-  return function start(code) {
+  return (code) => {
+    if (this.previous != 32 && this.previous != null) {
+      return nok(code);
+    }
+
     effects.enter("slackBold");
     effects.enter("slackBoldMarker");
     effects.consume(code);

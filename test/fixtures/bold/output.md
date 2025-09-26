@@ -53,19 +53,19 @@ Complex sequence of asterisks: \*\* one \* two \*\* three \* four \*
 
 **Spaces (programmatically generated for testing)**
 
-a\*b\*d
-a \*b\*d
-a\* b\*d
-a \* b\*d
-a\*b \*d
-a \*b \*d
-a\* b \*d
+a*b*d
+a *b*d
+a\* b*d
+a \* b*d
+a*b *d
+a *b *d
+a* b *d
 a \* b *d
-a\*b\* d
+a*b* d
 a **b** d
-a\* b\* d
+a* b* d
 a **b** d
-a\*b \* d
+a*b \* d
 a **b** d
-a* b \* d
+a\* b \* d
 a \* b \* d
