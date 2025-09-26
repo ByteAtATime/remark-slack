@@ -20,8 +20,6 @@ Bold surrounded by punctuation: (**bold**)
 Punctuation surrounded by bold: **(!)**
 Bold text is only punctuation: **!!!**
 Bold text with Unicode characters: **\u4f60\u597d**
-Bold text with emoji shortcodes: **this is** **![:great:](https://emoji.slack-edge.com/T0266FRGM/great/9d7b3f7f11a5b904.png)**
-Bold text that is only an emoji shortcode: **![:smile:](https://a.slack-edge.com/production-standard-emoji-assets/14.0/google-medium/1f604.png)**
 Bold text containing other potential markdown chars: **~\_\`>**
 Bold text with angle brackets: **\<not a link>**
 

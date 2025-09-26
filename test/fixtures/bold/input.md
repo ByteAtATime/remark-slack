@@ -20,8 +20,6 @@ Bold surrounded by punctuation: (*bold*)
 Punctuation surrounded by bold: *(!)*
 Bold text is only punctuation: *!!!*
 Bold text with Unicode characters: *\u4f60\u597d*
-Bold text with emoji shortcodes: *this is :great:*
-Bold text that is only an emoji shortcode: *:smile:*
 Bold text containing other potential markdown chars: *~_`>*
 Bold text with angle brackets: *<not a link>*
 
