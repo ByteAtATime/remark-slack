@@ -22,7 +22,8 @@ describe("remarkGfm", async function (t) {
 
 describe("fixtures", async function (t) {
   const base = new URL("fixtures/", import.meta.url);
-  const folders = await fs.readdir(base);
+  const dirents = await fs.readdir(base, { withFileTypes: true });
+  const folders = dirents.filter((d) => d.isDirectory()).map((d) => d.name);
 
   let index = -1;
 
