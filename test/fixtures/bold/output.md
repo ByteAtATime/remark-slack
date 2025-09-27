@@ -182,7 +182,7 @@ a \* b \* d
 42: \*bold\*\*
 43: **bold**+
 44: **bold**,
-45: **bold**\-
+45: **bold**-
 46: **bold**.
 47: **bold**/
 48: \*not bold\*0
@@ -198,7 +198,7 @@ a \* b \* d
 58: **bold**:
 59: **bold**;
 60: \*not bold\*<
-61: **bold**\=
+61: **bold**=
 62: \*not bold\*>
 63: **bold**?
 64: \*not bold\*@
