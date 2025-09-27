@@ -96,6 +96,10 @@ const tokenizeSlackBold: Tokenizer = function (effects, ok, nok) {
   const previous = this.previous; // save the previous char when entering - this will be the char before the first `*`
 
   const inside = (code: number | null) => {
+    if (code === 42) {
+      return nok(code);
+    }
+
     const token = effects.exit("slackBoldMarker");
     const canBeOpening = !previous || validPrecedingChars.has(previous);
     const canBeClosing = !code || validSucceedingChars.has(code);
@@ -107,6 +111,8 @@ const tokenizeSlackBold: Tokenizer = function (effects, ok, nok) {
   };
 
   return (code) => {
+    if (previous === 42) return nok(code);
+
     effects.enter("slackBoldMarker");
     effects.consume(code);
     return inside;
