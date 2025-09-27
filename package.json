@@ -15,6 +15,7 @@
     "typescript": "^5"
   },
   "dependencies": {
+    "micromark-util-chunked": "^2.0.1",
     "remark": "^15.0.1",
     "unist-util-visit": "^5.0.0"
   }

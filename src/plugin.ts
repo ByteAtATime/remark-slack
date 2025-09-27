@@ -20,6 +20,7 @@ export default function remarkSlack() {
   fromMarkdownExtensions.push(remarkFromMarkdown());
 
   return (tree: Root) => {
+    Bun.write("tree.json", JSON.stringify(tree, null, 2) + "\n");
     visit(tree, "text", (node) => {
       if (node.value.includes("  ")) {
         node.value = node.value.replace(/ {2,}/g, (match) => {
