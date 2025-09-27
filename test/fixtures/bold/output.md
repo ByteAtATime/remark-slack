@@ -19,7 +19,7 @@ Bold starting with punctuation: **!bold**
 Bold surrounded by punctuation: (**bold**)
 Punctuation surrounded by bold: **(!)**
 Bold text is only punctuation: **!!!**
-Bold text with Unicode characters: **你好**
+Bold text with Unicode characters: **\u4f60\u597d**
 Bold text containing other potential markdown chars: **~\_\`>**
 Bold text with angle brackets: **<not a link>**
 
