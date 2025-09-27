@@ -62,6 +62,10 @@ const resolveSlackBold: Resolver = (events, context) => {
             // don't allow newlines
             break;
           }
+          if (content.includes("*")) {
+            // don't allow asterisks in content (no nested or adjacent bold)
+            break;
+          }
 
           const nextEvents = [
             // enter slackBold
