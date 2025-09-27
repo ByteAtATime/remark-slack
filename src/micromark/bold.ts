@@ -43,6 +43,26 @@ const resolveSlackBold: Resolver = (events, context) => {
             end: token.end,
           };
 
+          const content = context.sliceSerialize({
+            start: openToken.end,
+            end: token.start,
+          });
+
+          if (content.length === 0) {
+            // don't allow empty bold
+            break;
+          }
+
+          if (content.startsWith(" ") && content.endsWith(" ")) {
+            // don't allow both leading and trailing space
+            break;
+          }
+
+          if (content.includes("\n")) {
+            // don't allow newlines
+            break;
+          }
+
           const nextEvents = [
             // enter slackBold
             ["enter", boldToken, context],
