@@ -132,7 +132,7 @@ a \* b \* d
 89: Y\*not bold\*
 90: Z\*not bold\*
 91: \[**bold**
-92: \\**bold**
+92: \\\*not bold\*
 93: ]\*not bold\*
 94: ^**bold**
 95: \_\*not bold\*

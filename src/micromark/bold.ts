@@ -8,7 +8,7 @@ import type {
 
 const validPrecedingChars = new Set([
   32, 33, 34, 35, 36, 37, 38, 40, 42, 43, 44, 45, 46, 47, 58, 59, 60, 61, 62,
-  63, 91, 92, 94, 123, -3, -4, -5,
+  63, 91, 94, 123, -3, -4, -5,
 ]);
 
 const validSucceedingChars = new Set([
