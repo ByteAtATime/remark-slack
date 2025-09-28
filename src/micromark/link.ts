@@ -16,7 +16,11 @@ const tokenizeSlackLink: Tokenizer = function (effects, ok, nok) {
   }
 
   function url(code: Code) {
-    if (code === 62 /* > */ || code === 32 /* space */) {
+    if (
+      code === 62 /* > */ ||
+      code === 32 /* space */ ||
+      code === 124 /* | */
+    ) {
       return nok(code);
     }
     return urlContinue(code);
