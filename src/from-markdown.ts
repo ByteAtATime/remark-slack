@@ -31,6 +31,15 @@ export const remarkFromMarkdown = (): Extension => {
       slackBold(token) {
         this.enter({ type: "strong", children: [] }, token);
       },
+      slackLink(token) {
+        this.enter({ type: "link", url: "", children: [] }, token);
+      },
+      slackLinkUrl(token) {
+        this.buffer();
+      },
+      slackLinkText(token) {
+        this.enter({ type: "text", value: "" }, token);
+      },
     },
     exit: {
       slackBold(token) {
@@ -47,6 +56,36 @@ export const remarkFromMarkdown = (): Extension => {
         const lastTextNode = findLastText(node);
         if (lastTextNode) {
           lastTextNode.value = lastTextNode.value.trimEnd();
+        }
+
+        this.exit(token);
+      },
+      slackLinkUrl(token) {
+        this.resume();
+        const node = this.stack[this.stack.length - 1];
+        if (node?.type !== "link") {
+          throw new Error("Expected to be in a link node");
+        }
+        node.url = this.sliceSerialize(token).trim();
+      },
+      slackLinkText(token) {
+        const node = this.stack[this.stack.length - 1];
+        if (node?.type !== "text") {
+          throw new Error("Expected to be in a text node");
+        }
+        const link = this.stack[this.stack.length - 2];
+        if (link?.type !== "link") {
+          throw new Error("Expected to be in a child of a link node");
+        }
+        const text = this.sliceSerialize(token);
+        node.value = text || link.url;
+
+        this.exit(token);
+      },
+      slackLink(token) {
+        const node = this.stack[this.stack.length - 1];
+        if (node?.type !== "link") {
+          throw new Error("Expected to be in a link node");
         }
 
         this.exit(token);
