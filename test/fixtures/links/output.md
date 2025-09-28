@@ -7,7 +7,7 @@ Mailto link with text: [Email Bob](mailto:bob@example.com)
 Mailto link with subject: [Email with Subject](mailto:test@example.com?subject=Hello)
 URL with a pipe in the query string (percent-encoded): [Search for A or B](https://example.com/search?q=a%7Cb)
 URL with no text after pipe: <https://example.com>
-URL with only spaces as text:
+URL with only spaces as text:&#x20;
 No URL before pipe: <|Just some text>
 Empty link: <>
 Empty link with pipe: <|>

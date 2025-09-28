@@ -88,6 +88,16 @@ export const remarkFromMarkdown = (): Extension => {
           throw new Error("Expected to be in a link node");
         }
 
+        if (
+          node.children[0]?.type === "text" &&
+          !node.children[0]!.value.trim().length
+        ) {
+          (node as unknown as Text).type = "text";
+          (node as unknown as Text).value = "";
+          delete (node as any).url;
+          delete (node as any).children;
+        }
+
         this.exit(token);
       },
     },
