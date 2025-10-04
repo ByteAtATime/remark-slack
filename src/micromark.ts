@@ -3,6 +3,6 @@ import { slackBoldConstruct } from "./micromark/bold";
 import { slackLinkConstruct } from "./micromark/link";
 
 export const slackTokens = {
-  text: { 42: slackBoldConstruct, 60: slackLinkConstruct },
+  text: { 42: slackBoldConstruct, ...slackLinkConstruct.text },
   disable: { null: ["attention"] },
 } satisfies Extension;

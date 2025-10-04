@@ -5,6 +5,8 @@ declare module "micromark-util-types" {
     slackBold: "slackBold";
     slackBoldMarker: "slackBoldMarker";
     slackBoldText: "slackBoldText";
+    slackLinkMarkerOpen: "slackLinkMarkerOpen";
+    slackLinkMarkerClose: "slackLinkMarkerClose";
     slackLink: "slackLink";
     slackLinkMarker: "slackLinkMarker";
     slackLinkUrl: "slackLinkUrl";
