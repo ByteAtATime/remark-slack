@@ -62,7 +62,11 @@ const resolveToSlackLink: Resolver = function (events, context) {
     end: closeToken.start,
   });
 
-  if (content.includes("\n") || content.includes("\r")) {
+  if (
+    content.includes("\n") ||
+    content.includes("\r") ||
+    content.startsWith(" ")
+  ) {
     return events;
   }
 
