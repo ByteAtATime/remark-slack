@@ -729,7 +729,7 @@
           "type": "strong",
           "children": [
             {
-              "type": "html",
+              "type": "text",
               "value": "<not a link>",
               "position": {
                 "start": {
