@@ -167,7 +167,8 @@ const resolveAllSlackLink: Resolver = function (events) {
     const token = events[i]![1];
     if (
       token.type === "slackLinkMarkerOpen" ||
-      token.type === "slackLinkMarkerClose"
+      token.type === "slackLinkMarkerClose" ||
+      token.type === "slackLinkSeparator"
     ) {
       token.type = "data";
     }
