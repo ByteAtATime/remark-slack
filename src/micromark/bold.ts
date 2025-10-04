@@ -3,6 +3,7 @@ import type {
   Construct,
   Extension,
   Resolver,
+  State,
   Tokenizer,
 } from "micromark-util-types";
 
@@ -99,7 +100,7 @@ const resolveSlackBold: Resolver = (events, context) => {
 const tokenizeSlackBold: Tokenizer = function (effects, ok, nok) {
   const previous = this.previous; // save the previous char when entering - this will be the char before the first `*`
 
-  const inside = (code: number | null) => {
+  const inside: State = (code) => {
     if (code === 42) {
       return nok(code);
     }
