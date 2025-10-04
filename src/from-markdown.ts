@@ -38,7 +38,7 @@ export const remarkFromMarkdown = (): Extension => {
         this.buffer();
       },
       slackLinkText(token) {
-        this.enter({ type: "text", value: "" }, token);
+        // this.buffer();
       },
     },
     exit: {
@@ -61,9 +61,12 @@ export const remarkFromMarkdown = (): Extension => {
         this.exit(token);
       },
       slackLink(token) {
-        const node = this.stack[this.stack.length - 1];
-        if (node?.type !== "link") {
+        const link = this.stack[this.stack.length - 1];
+        if (link?.type !== "link") {
           throw new Error("Expected to be in a link node");
+        }
+        if (link.children.length === 0 && link.url) {
+          link.children.push({ type: "text", value: link.url });
         }
         this.exit(token);
       },
@@ -77,7 +80,7 @@ export const remarkFromMarkdown = (): Extension => {
         link.url = url;
       },
       slackLinkText(token) {
-        this.exit(token);
+        //   this.exit(token);
       },
     },
   };

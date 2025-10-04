@@ -93,6 +93,22 @@ const resolveToSlackLink: Resolver = function (events, context) {
     pipeEventIndex > -1 ? pipeEventIndex : closeIndex - 1
   );
 
+  if (urlEvents.length === 0) return events;
+
+  const urlString = context
+    .sliceSerialize({
+      start: urlEvents[0]![1].start,
+      end: urlEvents[urlEvents.length - 1]![1].end,
+    })
+    .trim();
+
+  if (!urlString) return events;
+  try {
+    new URL(urlString);
+  } catch {
+    return events;
+  }
+
   const textStartIndex = pipeEventIndex + 2;
 
   const textEvents =
@@ -106,27 +122,25 @@ const resolveToSlackLink: Resolver = function (events, context) {
     context,
   ]);
 
-  if (urlEvents.length > 0) {
-    newEvents.push([
-      "enter",
-      {
-        type: "slackLinkUrl",
-        start: urlEvents[0]![1].start,
-        end: urlEvents[urlEvents.length - 1]![1].end,
-      },
-      context,
-    ]);
-    newEvents.push(...urlEvents);
-    newEvents.push([
-      "exit",
-      {
-        type: "slackLinkUrl",
-        start: urlEvents[0]![1].start,
-        end: urlEvents[urlEvents.length - 1]![1].end,
-      },
-      context,
-    ]);
-  }
+  newEvents.push([
+    "enter",
+    {
+      type: "slackLinkUrl",
+      start: urlEvents[0]![1].start,
+      end: urlEvents[urlEvents.length - 1]![1].end,
+    },
+    context,
+  ]);
+  newEvents.push(...urlEvents);
+  newEvents.push([
+    "exit",
+    {
+      type: "slackLinkUrl",
+      start: urlEvents[0]![1].start,
+      end: urlEvents[urlEvents.length - 1]![1].end,
+    },
+    context,
+  ]);
 
   if (textEvents.length > 0) {
     newEvents.push([
