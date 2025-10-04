@@ -60,44 +60,23 @@ export const remarkFromMarkdown = (): Extension => {
 
         this.exit(token);
       },
-      slackLinkUrl(token) {
-        this.resume();
-        const node = this.stack[this.stack.length - 1];
-        if (node?.type !== "link") {
-          throw new Error("Expected to be in a link node");
-        }
-        node.url = this.sliceSerialize(token).trim();
-      },
-      slackLinkText(token) {
-        const node = this.stack[this.stack.length - 1];
-        if (node?.type !== "text") {
-          throw new Error("Expected to be in a text node");
-        }
-        const link = this.stack[this.stack.length - 2];
-        if (link?.type !== "link") {
-          throw new Error("Expected to be in a child of a link node");
-        }
-        const text = this.sliceSerialize(token);
-        node.value = text || link.url;
-
-        this.exit(token);
-      },
       slackLink(token) {
         const node = this.stack[this.stack.length - 1];
         if (node?.type !== "link") {
           throw new Error("Expected to be in a link node");
         }
-
-        if (
-          node.children[0]?.type === "text" &&
-          !node.children[0]!.value.trim().length
-        ) {
-          (node as unknown as Text).type = "text";
-          (node as unknown as Text).value = "";
-          delete (node as any).url;
-          delete (node as any).children;
+        this.exit(token);
+      },
+      slackLinkUrl(token) {
+        const url = this.resume().trim();
+        const link = this.stack[this.stack.length - 1];
+        if (link?.type !== "link") {
+          throw new Error("Expected to be in a link node");
         }
 
+        link.url = url;
+      },
+      slackLinkText(token) {
         this.exit(token);
       },
     },

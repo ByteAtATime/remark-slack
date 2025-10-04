@@ -36,13 +36,13 @@ const tokenizeSlackLinkClose: Tokenizer = function (effects, ok, nok) {
 
 const resolveToSlackLink: Resolver = function (events, context) {
   const closeIndex = events.length - 1;
-  const [, closeToken] = events[closeIndex]!;
+  const closeToken = events[closeIndex]![1];
   let openIndex = -1;
 
   for (let i = closeIndex - 1; i >= 0; i--) {
-    const [event, token] = events[i]!;
+    const token = events[i]![1];
     if (
-      event === "enter" &&
+      events[i]![0] === "enter" &&
       token.type === "slackLinkMarkerOpen" &&
       !token._balanced
     ) {
@@ -50,11 +50,12 @@ const resolveToSlackLink: Resolver = function (events, context) {
       break;
     }
   }
+
   if (openIndex === -1) {
     return events;
   }
 
-  const [, openToken] = events[openIndex]!;
+  const openToken = events[openIndex]![1];
 
   const content = context.sliceSerialize({
     start: openToken.end,
@@ -65,20 +66,37 @@ const resolveToSlackLink: Resolver = function (events, context) {
     return events;
   }
 
-  if (content.indexOf("|") !== content.lastIndexOf("|")) {
-    return events;
-  }
+  const firstPipe = content.indexOf("|");
+  const lastPipe = content.lastIndexOf("|");
 
-  const pipeIndex = content.indexOf("|");
-  const urlPart = pipeIndex === -1 ? content : content.slice(0, pipeIndex);
-  const textPart = pipeIndex === -1 ? "" : content.slice(pipeIndex + 1);
-
-  if (!urlPart.trim() || urlPart.includes(" ")) {
+  if (firstPipe !== lastPipe) {
     return events;
   }
 
   openToken._balanced = true;
-  closeToken._balanced = true;
+  (events[closeIndex]![1] as any)._balanced = true;
+
+  let pipeEventIndex = -1;
+
+  for (let i = openIndex + 1; i < closeIndex; i++) {
+    const [event, token] = events[i]!;
+    if (event === "enter" && token.type === "slackLinkSeparator") {
+      pipeEventIndex = i;
+      break;
+    }
+  }
+
+  const contentStartIndex = openIndex + 2;
+
+  const urlEvents = events.slice(
+    contentStartIndex,
+    pipeEventIndex > -1 ? pipeEventIndex : closeIndex - 1
+  );
+
+  const textStartIndex = pipeEventIndex + 2;
+
+  const textEvents =
+    pipeEventIndex > -1 ? events.slice(textStartIndex, closeIndex - 1) : [];
 
   const newEvents: Event[] = [];
 
@@ -88,69 +106,49 @@ const resolveToSlackLink: Resolver = function (events, context) {
     context,
   ]);
 
-  newEvents.push(["enter", { ...openToken, type: "slackLinkMarker" }, context]);
-  newEvents.push(["exit", { ...openToken, type: "slackLinkMarker" }, context]);
-
-  const urlStartPoint = { ...openToken.end };
-  const urlEndPoint = { ...urlStartPoint };
-  urlEndPoint.offset += urlPart.length;
-  urlEndPoint.column += urlPart.length;
-
-  newEvents.push(
-    [
+  if (urlEvents.length > 0) {
+    newEvents.push([
       "enter",
-      { type: "slackLinkUrl", start: urlStartPoint, end: urlEndPoint },
+      {
+        type: "slackLinkUrl",
+        start: urlEvents[0]![1].start,
+        end: urlEvents[urlEvents.length - 1]![1].end,
+      },
       context,
-    ],
-    [
+    ]);
+    newEvents.push(...urlEvents);
+    newEvents.push([
       "exit",
-      { type: "slackLinkUrl", start: urlStartPoint, end: urlEndPoint },
+      {
+        type: "slackLinkUrl",
+        start: urlEvents[0]![1].start,
+        end: urlEvents[urlEvents.length - 1]![1].end,
+      },
       context,
-    ]
-  );
-
-  let textStartPoint = urlEndPoint;
-
-  if (pipeIndex !== -1) {
-    const separatorStartPoint = { ...urlEndPoint };
-    const separatorEndPoint = { ...urlEndPoint };
-    separatorEndPoint.offset += 1;
-    separatorEndPoint.column += 1;
-    const separatorToken: Token = {
-      type: "slackLinkSeparator",
-      start: separatorStartPoint,
-      end: separatorEndPoint,
-    };
-    newEvents.push(
-      ["enter", separatorToken, context],
-      ["exit", separatorToken, context]
-    );
-    textStartPoint = separatorEndPoint;
+    ]);
   }
 
-  const textEndPoint = { ...textStartPoint };
-  textEndPoint.offset += textPart.length;
-  textEndPoint.column += textPart.length;
-
-  newEvents.push(
-    [
+  if (textEvents.length > 0) {
+    newEvents.push([
       "enter",
-      { type: "slackLinkText", start: textStartPoint, end: textEndPoint },
+      {
+        type: "slackLinkText",
+        start: textEvents[0]![1].start,
+        end: textEvents[textEvents.length - 1]![1].end,
+      },
       context,
-    ],
-    [
+    ]);
+    newEvents.push(...textEvents);
+    newEvents.push([
       "exit",
-      { type: "slackLinkText", start: textStartPoint, end: textEndPoint },
+      {
+        type: "slackLinkText",
+        start: textEvents[0]![1].start,
+        end: textEvents[textEvents.length - 1]![1].end,
+      },
       context,
-    ]
-  );
-
-  newEvents.push([
-    "enter",
-    { ...closeToken, type: "slackLinkMarker" },
-    context,
-  ]);
-  newEvents.push(["exit", { ...closeToken, type: "slackLinkMarker" }, context]);
+    ]);
+  }
 
   newEvents.push([
     "exit",
@@ -181,6 +179,20 @@ const slackLinkOpen: Construct = {
   tokenize: tokenizeSlackLinkOpen,
 };
 
+const slackLinkSeparator: Construct = {
+  tokenize: function (effects, ok, nok) {
+    return start;
+
+    function start(code: Code) {
+      if (code !== 124 /* | */) return nok(code);
+      effects.enter("slackLinkSeparator");
+      effects.consume(code);
+      effects.exit("slackLinkSeparator");
+      return ok;
+    }
+  },
+};
+
 const slackLinkClose: Construct = {
   tokenize: tokenizeSlackLinkClose,
   resolveTo: resolveToSlackLink,
@@ -189,7 +201,8 @@ const slackLinkClose: Construct = {
 
 export const slackLinkConstruct: Extension = {
   text: {
-    60: slackLinkOpen,
-    62: slackLinkClose,
+    60: slackLinkOpen, // <
+    124: slackLinkSeparator, // |
+    62: slackLinkClose, // >
   },
 };
