@@ -37,9 +37,6 @@ export const remarkFromMarkdown = (): Extension => {
       slackLinkUrl(token) {
         this.buffer();
       },
-      slackLinkText(token) {
-        // this.buffer();
-      },
     },
     exit: {
       slackBold(token) {
@@ -78,9 +75,6 @@ export const remarkFromMarkdown = (): Extension => {
         }
 
         link.url = url;
-      },
-      slackLinkText(token) {
-        //   this.exit(token);
       },
     },
   };
