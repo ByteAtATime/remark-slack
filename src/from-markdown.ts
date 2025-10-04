@@ -1,5 +1,6 @@
 import type { PhrasingContent, Text } from "mdast";
 import type { Extension } from "mdast-util-from-markdown";
+import type { SlackPing } from "./global";
 
 const findFirstText = (node: PhrasingContent): Text | null => {
   if (node.type === "text") {
@@ -35,6 +36,12 @@ export const remarkFromMarkdown = (): Extension => {
         this.enter({ type: "link", url: "", children: [] }, token);
       },
       slackLinkUrl(token) {
+        this.buffer();
+      },
+      slackPing(token) {
+        this.enter({ type: "slackPing", userId: "" } as SlackPing, token);
+      },
+      slackPingId(token) {
         this.buffer();
       },
     },
@@ -75,6 +82,15 @@ export const remarkFromMarkdown = (): Extension => {
         }
 
         link.url = url;
+      },
+      slackPing(token) {
+        this.exit(token);
+      },
+      slackPingId(token) {
+        this.resume();
+        const id = this.sliceSerialize(token);
+        const node = this.stack[this.stack.length - 1] as SlackPing;
+        node.userId = id;
       },
     },
   };
