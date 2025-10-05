@@ -10,7 +10,7 @@ const document = `
 
 const processor = remark()
   .use(remarkSlack)
-  .use(remarkRehype, rehypeSlack({ component: false }))
+  .use(remarkRehype, rehypeSlack({ component: true }))
   .use(rehypeStringify);
 
 const html = await processor.process(document);

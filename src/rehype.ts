@@ -13,27 +13,22 @@ const handleSlackPing: Handler = (state, node) => {
   const options = state.options as RehypeSlackOptions;
   const userData = node.data;
 
-  const displayName = userData?.displayName ?? node.userId;
-
   if (!options.component) {
     const href = options.userLink
       ? options.userLink(node.userId)
-      : `#user-${node.userId}`;
+      : `#${node.userId}`;
 
-    return h("a", { href, className: "slack-ping" }, `@${displayName}`);
+    return h(
+      "a",
+      { href, className: "slack-ping", "data-user-id": node.userId },
+      `${node.userId}`
+    );
   }
 
-  return h(
-    "span",
-    {
-      className: "slack-ping slack-ping-interactive",
-      "data-user-id": node.userId,
-      "data-user-name": userData?.displayName,
-      "data-user-image": userData?.image,
-      "data-user-pronouns": userData?.pronouns,
-    },
-    `@${displayName}`
-  );
+  return h("slack-ping", {
+    className: "slack-ping slack-ping-interactive",
+    "data-user-id": node.userId,
+  });
 };
 
 export const rehypeSlack = (options: RehypeSlackOptions = {}) => {
