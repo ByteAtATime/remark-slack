@@ -1,6 +1,6 @@
 import type { PhrasingContent, Text } from "mdast";
 import type { Extension } from "mdast-util-from-markdown";
-import type { SlackPing, SlackChannel } from "./global";
+import type { SlackPing, SlackChannel, SlackEmoji } from "./global";
 
 const findFirstText = (node: PhrasingContent): Text | null => {
   if (node.type === "text") {
@@ -54,6 +54,12 @@ export const remarkFromMarkdown = (): Extension => {
         this.buffer();
       },
       slackChannelName(token) {
+        this.buffer();
+      },
+      slackEmoji(token) {
+        this.enter({ type: "slackEmoji", code: "" } as SlackEmoji, token);
+      },
+      slackEmojiCode(token) {
         this.buffer();
       },
     },
@@ -118,6 +124,15 @@ export const remarkFromMarkdown = (): Extension => {
         const name = this.sliceSerialize(token);
         const node = this.stack[this.stack.length - 1] as SlackChannel;
         node.name = name;
+      },
+      slackEmoji(token) {
+        this.exit(token);
+      },
+      slackEmojiCode(token) {
+        this.resume();
+        const code = this.sliceSerialize(token);
+        const node = this.stack[this.stack.length - 1] as SlackEmoji;
+        node.code = code;
       },
     },
   };

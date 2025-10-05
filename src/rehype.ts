@@ -1,14 +1,16 @@
 import { h } from "hastscript";
 import type { Element } from "hast";
-import type { SlackPing, SlackChannel } from "./global";
+import type { SlackPing, SlackChannel, SlackEmoji } from "./global";
 
 type PingHandler = (state: any, node: SlackPing) => Element;
 type ChannelHandler = (state: any, node: SlackChannel) => Element;
+type EmojiHandler = (state: any, node: SlackEmoji) => Element;
 
 type RehypeSlackOptions = {
   component?: boolean;
   userLink?: (userId: string) => string;
   channelLink?: (channelId: string) => string;
+  emojiUrl?: (code: string) => string;
 };
 
 const handleSlackPing: PingHandler = (state, node) => {
@@ -54,11 +56,27 @@ const handleSlackChannel: ChannelHandler = (state, node) => {
   });
 };
 
+const handleSlackEmoji: EmojiHandler = (state, node) => {
+  const options = state.options as RehypeSlackOptions;
+
+  const url = options.emojiUrl
+    ? options.emojiUrl(node.code)
+    : `https://cachet.dunkirk.sh/emojis/${node.code}/r`;
+
+  return h("img", {
+    src: url,
+    alt: `:${node.code}:`,
+    className: "slack-emoji",
+    "data-emoji-code": node.code,
+  });
+};
+
 export const rehypeSlack = (options: RehypeSlackOptions = {}) => {
   return {
     handlers: {
       slackPing: handleSlackPing,
       slackChannel: handleSlackChannel,
+      slackEmoji: handleSlackEmoji,
     },
     ...options,
   };

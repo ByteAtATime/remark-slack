@@ -8,6 +8,13 @@ const document = `
 <@U04FRCW7E4A>
 
 <#C090JKDJYN8|>
+
+\`code\`
+
+:pf:
+
+~strikethrough~
+_italic_
 `;
 
 const processor = remark()
