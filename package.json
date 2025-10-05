@@ -1,6 +1,6 @@
 {
   "name": "remark-slack",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A remark plugin to render Slack's mrkdwn format.",
   "module": "src/index.ts",
   "type": "module",
