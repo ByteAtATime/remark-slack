@@ -1,6 +1,7 @@
 import { h } from "hastscript";
 import type { Element } from "hast";
 import type { SlackPing, SlackChannel, SlackEmoji } from "./global";
+import emoji from "./emoji.json";
 
 type PingHandler = (state: any, node: SlackPing) => Element;
 type ChannelHandler = (state: any, node: SlackChannel) => Element;
@@ -58,6 +59,12 @@ const handleSlackChannel: ChannelHandler = (state, node) => {
 
 const handleSlackEmoji: EmojiHandler = (state, node) => {
   const options = state.options as RehypeSlackOptions;
+
+  const builtinEmoji = emoji[node.code as keyof typeof emoji];
+
+  if (builtinEmoji) {
+    return h(null, builtinEmoji);
+  }
 
   const url = options.emojiUrl
     ? options.emojiUrl(node.code)
