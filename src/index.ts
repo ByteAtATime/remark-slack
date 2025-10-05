@@ -1,3 +1,4 @@
 import remarkSlack from "./plugin";
+import { rehypeSlack } from "./rehype";
 
-export default remarkSlack;
+export { remarkSlack, rehypeSlack };
