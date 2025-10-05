@@ -16,12 +16,18 @@ declare module "micromark-util-types" {
     slackPing: "slackPing";
     slackPingMarker: "slackPingMarker";
     slackPingId: "slackPingId";
+    slackChannel: "slackChannel";
+    slackChannelMarker: "slackChannelMarker";
+    slackChannelId: "slackChannelId";
+    slackChannelSeparator: "slackChannelSeparator";
+    slackChannelName: "slackChannelName";
   }
 }
 
 declare module "mdast" {
   interface RootContentMap {
     slackPing: SlackPing;
+    slackChannel: SlackChannel;
   }
 }
 
@@ -38,8 +44,15 @@ export interface SlackPing extends Node {
   };
 }
 
+export interface SlackChannel extends Node {
+  type: "slackChannel";
+  channelId: string;
+  name?: string;
+}
+
 declare module "mdast" {
   interface PhrasingContentMap {
     slackPing: SlackPing;
+    slackChannel: SlackChannel;
   }
 }

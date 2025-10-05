@@ -3,7 +3,7 @@ import type { Processor } from "unified";
 import { slackTokens } from "./micromark";
 import { remarkFromMarkdown } from "./from-markdown";
 import { visit } from "unist-util-visit";
-import type { SlackPing } from "./global";
+import type { SlackPing, SlackChannel } from "./global";
 
 export default function remarkSlack() {
   // @ts-expect-error: TS is wrong about `this`.
@@ -24,6 +24,12 @@ export default function remarkSlack() {
     handlers: {
       slackPing(node: SlackPing) {
         return `<@${node.userId}>`;
+      },
+      slackChannel(node: SlackChannel) {
+        if (node.name) {
+          return `<#${node.channelId}|${node.name}>`;
+        }
+        return `<#${node.channelId}>`;
       },
     },
   });

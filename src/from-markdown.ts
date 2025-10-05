@@ -1,6 +1,6 @@
 import type { PhrasingContent, Text } from "mdast";
 import type { Extension } from "mdast-util-from-markdown";
-import type { SlackPing } from "./global";
+import type { SlackPing, SlackChannel } from "./global";
 
 const findFirstText = (node: PhrasingContent): Text | null => {
   if (node.type === "text") {
@@ -42,6 +42,18 @@ export const remarkFromMarkdown = (): Extension => {
         this.enter({ type: "slackPing", userId: "" } as SlackPing, token);
       },
       slackPingId(token) {
+        this.buffer();
+      },
+      slackChannel(token) {
+        this.enter(
+          { type: "slackChannel", channelId: "" } as SlackChannel,
+          token
+        );
+      },
+      slackChannelId(token) {
+        this.buffer();
+      },
+      slackChannelName(token) {
         this.buffer();
       },
     },
@@ -91,6 +103,21 @@ export const remarkFromMarkdown = (): Extension => {
         const id = this.sliceSerialize(token);
         const node = this.stack[this.stack.length - 1] as SlackPing;
         node.userId = id;
+      },
+      slackChannel(token) {
+        this.exit(token);
+      },
+      slackChannelId(token) {
+        this.resume();
+        const id = this.sliceSerialize(token);
+        const node = this.stack[this.stack.length - 1] as SlackChannel;
+        node.channelId = id;
+      },
+      slackChannelName(token) {
+        this.resume();
+        const name = this.sliceSerialize(token);
+        const node = this.stack[this.stack.length - 1] as SlackChannel;
+        node.name = name;
       },
     },
   };
