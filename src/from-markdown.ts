@@ -32,6 +32,12 @@ export const remarkFromMarkdown = (): Extension => {
       slackBold(token) {
         this.enter({ type: "strong", children: [] }, token);
       },
+      slackItalic(token) {
+        this.enter({ type: "emphasis", children: [] }, token);
+      },
+      slackStrikethrough(token) {
+        this.enter({ type: "delete", children: [] }, token);
+      },
       slackLink(token) {
         this.enter({ type: "link", url: "", children: [] }, token);
       },
@@ -68,6 +74,42 @@ export const remarkFromMarkdown = (): Extension => {
         const node = this.stack[this.stack.length - 1];
         if (node?.type !== "strong") {
           throw new Error("Expected to be in a strong node");
+        }
+
+        const firstTextNode = findFirstText(node);
+        if (firstTextNode) {
+          firstTextNode.value = firstTextNode.value.trimStart();
+        }
+
+        const lastTextNode = findLastText(node);
+        if (lastTextNode) {
+          lastTextNode.value = lastTextNode.value.trimEnd();
+        }
+
+        this.exit(token);
+      },
+      slackItalic(token) {
+        const node = this.stack[this.stack.length - 1];
+        if (node?.type !== "emphasis") {
+          throw new Error("Expected to be in an emphasis node");
+        }
+
+        const firstTextNode = findFirstText(node);
+        if (firstTextNode) {
+          firstTextNode.value = firstTextNode.value.trimStart();
+        }
+
+        const lastTextNode = findLastText(node);
+        if (lastTextNode) {
+          lastTextNode.value = lastTextNode.value.trimEnd();
+        }
+
+        this.exit(token);
+      },
+      slackStrikethrough(token) {
+        const node = this.stack[this.stack.length - 1];
+        if (node?.type !== "delete") {
+          throw new Error("Expected to be in a delete node");
         }
 
         const firstTextNode = findFirstText(node);

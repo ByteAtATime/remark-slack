@@ -5,7 +5,7 @@ import type {
   Tokenizer,
 } from "micromark-util-types";
 import { asciiAlphanumeric } from "micromark-util-character";
-import { slackBoldConstruct } from "./micromark/bold";
+import { slackEmphasisConstruct } from "./micromark/bold";
 import { slackLinkConstruct } from "./micromark/link";
 import { slackPingConstruct, slackChannelConstruct } from "./micromark/ping";
 
@@ -69,7 +69,9 @@ const linkTextConstructs = slackLinkConstruct.text as Record<number, Construct>;
 
 export const slackTokens = {
   text: {
-    42: slackBoldConstruct,
+    42: slackEmphasisConstruct,
+    95: slackEmphasisConstruct,
+    126: slackEmphasisConstruct,
     58: slackEmojiConstruct,
     ...linkTextConstructs,
     60: [slackPingConstruct, slackChannelConstruct, linkTextConstructs[60]!],
