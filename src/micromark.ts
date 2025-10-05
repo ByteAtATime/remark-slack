@@ -76,5 +76,5 @@ export const slackTokens = {
     ...linkTextConstructs,
     60: [slackPingConstruct, slackChannelConstruct, linkTextConstructs[60]!],
   },
-  disable: { null: ["attention"] },
+  disable: { null: ["attention", "list"] },
 } satisfies Extension;
