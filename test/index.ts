@@ -14,7 +14,7 @@ describe("remarkGfm", async function (t) {
   await test("should not throw if not passed options", async function () {
     assert.doesNotThrow(async function () {
       remark()
-        .use((await import("remark-slack")).default)
+        .use((await import("remark-slack")).remarkSlack)
         .freeze();
     });
   });
@@ -47,7 +47,7 @@ describe("fixtures", async function (t) {
         config = JSON.parse(String(await fs.readFile(configUrl)));
       } catch {}
 
-      const remarkGfm = (await import("remark-slack")).default;
+      const remarkGfm = (await import("remark-slack")).remarkSlack;
       const processor = remark().use(remarkGfm, config);
       const actual = processor.parse(input);
 

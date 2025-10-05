@@ -1,8 +1,7 @@
 import { remark } from "remark";
-import remarkSlack from "../src";
 import remarkRehype from "remark-rehype";
-import { rehypeSlack } from "../src/rehype";
 import rehypeStringify from "rehype-stringify";
+import { remarkSlack, rehypeSlack } from "../src";
 
 const document = `
 <@U04FRCW7E4A>
