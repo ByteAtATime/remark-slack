@@ -16,7 +16,10 @@
   },
   "dependencies": {
     "micromark-util-chunked": "^2.0.1",
+    "rehype": "^13.0.2",
+    "rehype-stringify": "^10.0.1",
     "remark": "^15.0.1",
+    "remark-rehype": "^11.1.2",
     "unist-util-visit": "^5.0.0"
   }
 }
