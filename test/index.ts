@@ -7,7 +7,8 @@ import { remark } from "remark";
 describe("remarkGfm", async function (t) {
   await test("should expose the public api", async function () {
     assert.deepEqual(Object.keys(await import("remark-slack")).sort(), [
-      "default",
+      "rehypeSlack",
+      "remarkSlack",
     ]);
   });
 
