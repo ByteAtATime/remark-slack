@@ -41,7 +41,7 @@ const handleSlackChannel: ChannelHandler = (state, node) => {
   if (!options.component) {
     const href = options.channelLink
       ? options.channelLink(node.channelId)
-      : `#/${node.channelId}`;
+      : `#${node.channelId}`;
 
     return h(
       "a",
