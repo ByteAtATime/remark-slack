@@ -2,10 +2,12 @@ import { h } from "hastscript";
 import type { Element } from "hast";
 import type { SlackPing, SlackChannel, SlackEmoji } from "./global";
 import emoji from "./emoji.json";
+import type { Options } from "remark-rehype";
+import type { State } from "mdast-util-to-hast";
 
-type PingHandler = (state: any, node: SlackPing) => Element;
-type ChannelHandler = (state: any, node: SlackChannel) => Element;
-type EmojiHandler = (state: any, node: SlackEmoji) => Element;
+type PingHandler = (state: State, node: SlackPing) => Element;
+type ChannelHandler = (state: State, node: SlackChannel) => Element;
+type EmojiHandler = (state: State, node: SlackEmoji) => Element;
 
 type RehypeSlackOptions = {
   component?: boolean;
@@ -78,7 +80,7 @@ const handleSlackEmoji: EmojiHandler = (state, node) => {
   });
 };
 
-export const rehypeSlack = (options: RehypeSlackOptions = {}) => {
+export const rehypeSlack = (options: RehypeSlackOptions = {}): Options => {
   return {
     handlers: {
       slackPing: handleSlackPing,
