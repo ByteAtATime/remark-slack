@@ -1,4 +1,4 @@
-import type { Root } from "mdast";
+import type { Delete, Root } from "mdast";
 import type { Processor } from "unified";
 import { slackTokens } from "./micromark";
 import { remarkFromMarkdown } from "./from-markdown";
@@ -33,6 +33,15 @@ export default function remarkSlack() {
       },
       slackEmoji(node: SlackEmoji) {
         return `:${node.code}:`;
+      },
+      delete(node: Delete, _, state, info) {
+        const content = state.containerPhrasing(node, {
+          ...info,
+          before: "~",
+          after: "~",
+        });
+
+        return `~${content}~`;
       },
     },
   });
